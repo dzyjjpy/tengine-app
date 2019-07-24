@@ -1,0 +1,4 @@
+# ninja log v5
+0	1983	1563957495	CMakeFiles/native-lib.dir/src/main/cpp/native-lib.cpp.o	3adcffb895956b61
+0	2131	1563957495	CMakeFiles/native-lib.dir/src/main/cpp/Tengine_Wrapper.cpp.o	2932c27260c6d934
+2131	2344	1563957495	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so	c89d7aee735851e3

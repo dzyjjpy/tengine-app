@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
-set(libs "${CMAKE_SOURCE_DIR}/src/main/jnilibs")
+set(libs "${CMAKE_SOURCE_DIR}/src/main/jniLibs")
 
 add_library(libopencv SHARED IMPORTED  )
 set_target_properties(libopencv PROPERTIES
@@ -24,6 +24,7 @@ set_target_properties(libtengine PROPERTIES
 #add_library(libprotobuf SHARED IMPORTED  )
 #set_target_properties(libprotobuf PROPERTIES
 #IMPORTED_LOCATION "${libs}/${ANDROID_ABI}/libprotobuf.so")
+
 include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp)
 add_library( # Sets the name of the library.
              native-lib

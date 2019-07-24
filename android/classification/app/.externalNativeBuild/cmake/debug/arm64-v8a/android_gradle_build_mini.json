@@ -1,0 +1,18 @@
+{
+  "buildFiles": [
+    "/home/jiapy/Android/Sdk/ndk-bundle/build/cmake/platforms.cmake",
+    "/home/jiapy/Android/Sdk/ndk-bundle/build/cmake/android.toolchain.cmake",
+    "/home/jiapy/workspace/AndroidProject/Tengine-app/android/classification/app/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/home/jiapy/Android/Sdk/cmake/3.10.2.4988404/bin/cmake --build /home/jiapy/workspace/AndroidProject/Tengine-app/android/classification/app/.externalNativeBuild/cmake/debug/arm64-v8a --target clean"
+  ],
+  "libraries": {
+    "native-lib-Debug-arm64-v8a": {
+      "artifactName": "native-lib",
+      "buildCommand": "/home/jiapy/Android/Sdk/cmake/3.10.2.4988404/bin/cmake --build /home/jiapy/workspace/AndroidProject/Tengine-app/android/classification/app/.externalNativeBuild/cmake/debug/arm64-v8a --target native-lib",
+      "abi": "arm64-v8a",
+      "output": "/home/jiapy/workspace/AndroidProject/Tengine-app/android/classification/app/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so"
+    }
+  }
+}

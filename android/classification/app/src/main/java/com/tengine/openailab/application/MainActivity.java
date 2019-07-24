@@ -27,15 +27,19 @@ import android.support.v4.content.FileProvider;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import android.os.Environment;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
+//    System.out.println('');
+//    System.out.println('123');  // errors , why??
     // Used to load the 'native-lib' library on application startup.
     static {
+        System.out.println("----begin load library----");
         System.loadLibrary("native-lib");
+        System.out.println("native lib load success.");
     }
     TextView tv = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
