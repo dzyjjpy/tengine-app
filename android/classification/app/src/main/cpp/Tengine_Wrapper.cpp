@@ -9,6 +9,9 @@
 #include "Tengine_Wrapper.h"
 #include "opencv2/imgcodecs.hpp"
 
+#include <android/log.h>
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,"JPY",__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,"JPY",__VA_ARGS__)
 
 int TengineWrapper::InitTengine()
 {
@@ -16,17 +19,26 @@ int TengineWrapper::InitTengine()
     if (request_tengine_version("0.1") < 0)
         return -1;
 
-    const char* mobilenet_tf_model = "/data/local/tmp/frozen_mobilenet_v1_224.pb";
+    const char* mobilenet_tf_model = "/data/local/tmp/frozen_mobilenet_v1_224.pb";   // mobileNet path: /data/local/tmp/frozen_mobilenet_v1_224.pb    /data/local/tmp/squeezenet.pb 模型名字也有关系
+    LOGI("---------predict classification with squeezenet.pb model----------");
+
     //const char* mobilenet_caffe_proto = "/sdcard/openailab/models/mobilenet_deploy.prototxt";
     //const char* mobilenet_caffe_model = "/sdcard/openailab/models/mobilenet.caffemodel";
     const char* format = "tensorflow";
+    LOGI("---------after format string----------");
 
-    if (load_model("mobilenet", format, mobilenet_tf_model) < 0)
+    if (load_model("squeezenet", format, mobilenet_tf_model) < 0)    // error here    // loadmodel有关系   mobilenet
     //if (load_model("mobilenet", format, mobilenet_caffe_proto, mobilenet_caffe_model) < 0)
+    {
+        LOGI("---------loadmodel() < 0----------");
         return 4;
+    }
+    else
+    {
+        LOGI("---------loadmodel() >= 0----------");
+    }
 
-
-    g_mobilenet = create_runtime_graph("graph0","mobilenet",NULL);
+    g_mobilenet = create_runtime_graph("graph0","squeezenet",NULL);  //mobilenet
     if (!check_graph_valid(g_mobilenet))
         return 5;
 
@@ -169,7 +181,7 @@ int TengineWrapper::RunTengine(cv::Mat sample)
 }
 std::string TengineWrapper::GetTop1()
 {
-    const char* label_file = "/data/local/tmp/synset_words.txt";
+    const char* label_file = "/data/local/tmp/labels.txt";   // synset_words.txt
     std::vector<std::string> result;
     std::ifstream labels(label_file);
 
@@ -192,5 +204,5 @@ std::string TengineWrapper::GetTop1()
         }
     }
 
-    return result[true_id - 1];
+    return result[true_id];  // result[true_id - 1]
 }
