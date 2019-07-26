@@ -25,6 +25,7 @@ public:
     int RunTengine(const char* image);
     int RunMobilenet(cv::Mat sample);
     int RunTengine(cv::Mat sample);
+    void post_run(float* outdata, float* result, int height, int width, int depth, int dim);
     int ReleaseMobilenet();
     int ReleaseTengine();
     std::string GetTop1();
