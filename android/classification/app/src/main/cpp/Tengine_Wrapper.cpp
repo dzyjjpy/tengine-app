@@ -10,6 +10,7 @@
 #include "opencv2/imgcodecs.hpp"
 
 //#inlucde "string.h"
+#include <sys/time.h>
 
 #include <android/log.h>
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,"JPY",__VA_ARGS__)
@@ -188,6 +189,12 @@ int TengineWrapper::get_input_data(cv::Mat sample, float* data, int img_h, int i
 
 int TengineWrapper::RunTengine(const char* image)
 {
+    struct timeval t0, t1;
+    float avg_time = 0.f;
+    gettimeofday(&t0, NULL);
+    // std::cout << "----Debug----begin to calculate time----" << std::endl;
+
+
     LOGI("---------run_graph(char* image)----------");
 
     if( get_input_data(image, g_mobilenet_input, 128, 128) )
@@ -196,32 +203,55 @@ int TengineWrapper::RunTengine(const char* image)
     if( !run_graph(g_mobilenet,1))
         return 2;
 
+
+    gettimeofday(&t1, NULL);
+    float mytime = ( float )((t1.tv_sec * 1000000 + t1.tv_usec) - (t0.tv_sec * 1000000 + t0.tv_usec)) / 1000;
+    avg_time += mytime;
+    LOGI("--------- run_graph cost time %.5f ----------", avg_time);
+
+
     LOGI("---------TTengineWrapper::RunTengine(char*image) success----------");
     return 0;
 }
 int TengineWrapper::RunTengine(cv::Mat sample)
 {
+     /* calculate cost time for running model*/
+     struct timeval t0, t1;
+     float avg_time = 0.f;
+     gettimeofday(&t0, NULL);
+     // std::cout << "----Debug----begin to calculate time----" << std::endl;
 
-    LOGI("---------run_graph(cv::Mat)----------");
+    //LOGI("---------run_graph(cv::Mat)----------");
     if( get_input_data(sample, g_mobilenet_input, 128, 128) )   // 224, 224
     {
         return 7;
     }
     else
     {
-        LOGI("---------get_input_data(sample, g_mobilenet_input, 128, 128) success----------");
+    //    LOGI("---------get_input_data(sample, g_mobilenet_input, 128, 128) success----------");
     }
 
     if( !run_graph(g_mobilenet,1))   // run_graph: 0 means success, -1 means fail
     {
-        LOGI("---------run_graph(g_mobilenet,1) return 0, success----------");
+    //    LOGI("---------run_graph(g_mobilenet,1) return 0, success----------");
     }
     else
     {
-        LOGI("---------run_graph(g_mobilenet,1) return -1, failure----------");
+    //    LOGI("---------run_graph(g_mobilenet,1) return -1, failure----------");
         return 2;
     }
 
+    int repeat_count = 10;
+    for(int i=0; i< repeat_count; i++)
+    {
+        run_graph(g_mobilenet,1);
+    }
+
+    /* calculate cost time for running model*/
+    gettimeofday(&t1, NULL);
+    float mytime = ( float )((t1.tv_sec * 1000000 + t1.tv_usec) - (t0.tv_sec * 1000000 + t0.tv_usec)) / 1000;
+    avg_time += mytime;
+    LOGI("--------- run_graph cost time %.5f ----------", avg_time/repeat_count);
     LOGI("---------TTengineWrapper::RunTengine(cv::Mat) success----------");
     return 0;
 }
